@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>MediSathi - Find Hospitals</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+        }
+
+        body {
+            background: #f0fdf8;
+            padding: 20px;
+            color: #1e293b;
+        }
+
+        .container {
+            max-width: 500px;
+            margin: 20px auto;
+            background: white;
+            padding: 25px;
+            border-radius: 20px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.06);
+        }
+
+        .back {
+            display: inline-block;
+            margin-bottom: 22px;
+            color: #059669;
+            text-decoration: none;
+        }
+
+        h1 {
+            color: #059669;
+            font-size: 26px;
+            margin-bottom: 10px;
+        }
+
+        .subtitle {
+            color: #64748b;
+            font-size: 14px;
+            line-height: 1.6;
+            margin-bottom: 22px;
+        }
+
+        label {
+            display: block;
+            margin: 15px 0 8px;
+            font-size: 14px;
+            font-weight: bold;
+        }
+
+        input, select {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #cbd5e1;
+            border-radius: 10px;
+            font-size: 14px;
+            background: white;
+        }
+
+        button {
+            width: 100%;
+            padding: 13px;
+            margin-top: 16px;
+            border: none;
+            border-radius: 10px;
+            background: #10b981;
+            color: white;
+            font-size: 15px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background: #059669;
+        }
+
+        .hospital-card {
+            margin-top: 18px;
+            padding: 16px;
+            border: 1px solid #d1fae5;
+            border-radius: 12px;
+            background: #f8fffc;
+        }
+
+        .hospital-card h2 {
+            font-size: 17px;
+            color: #047857;
+            margin-bottom: 8px;
+        }
+
+        .hospital-card p {
+            font-size: 13px;
+            color: #475569;
+            line-height: 1.7;
+            overflow-wrap: anywhere;
+        }
+
+        .hospital-card a {
+            display: inline-block;
+            margin-top: 10px;
+            color: #047857;
+            font-weight: bold;
+            text-decoration: none;
+        }
+
+        .notice {
+            margin-top: 20px;
+            font-size: 12px;
+            line-height: 1.6;
+            color: #64748b;
+        }
+
+        #results {
+            margin-top: 20px;
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="container">
+
+    <a href="dashboard.html" class="back">← Back to Dashboard</a>
+
+    <h1>🏥 Find Hospitals</h1>
+
+    <p class="subtitle">
+        Apne area mein hospitals aur medical facilities dhoondhein.
+    </p>
+
+    <form id="searchForm">
+
+        <label for="city">City / Area</label>
+
+        <input
+            type="text"
+            id="city"
+            placeholder="Enter city or area name"
+            required
+        >
+
+        <label for="facility">Hospital Facility</label>
+
+        <select id="facility">
+            <option value="hospital">General Hospital</option>
+            <option value="emergency">Emergency Services</option>
+            <option value="child">Child Specialist</option>
+            <option value="heart">Heart Specialist</option>
+            <option value="clinic">Clinic</option>
+        </select>
+
+        <button type="submit">Search Hospitals</button>
+
+    </form>
+
+    <div id="results" aria-live="polite"></div>
+
+    <p class="notice">
+        Note: Yeh demo Google Maps par search kholta hai.
+        Hospital ki

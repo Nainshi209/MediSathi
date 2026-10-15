@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>MediSathi | Sign Up</title>
+
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: Arial, sans-serif;
+    }
+
+    body {
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background: linear-gradient(135deg, #e8f8f5, #e8f0ff);
+      padding: 20px;
+    }
+
+    .signup-box {
+      width: 100%;
+      max-width: 400px;
+      background: white;
+      padding: 30px;
+      border-radius: 18px;
+      box-shadow: 0 8px 30px rgba(0, 0, 0, 0.1);
+    }
+
+    .logo {
+      text-align: center;
+      color: #159b83;
+      font-size: 28px;
+      font-weight: bold;
+      margin-bottom: 8px;
+    }
+
+    h2 {
+      text-align: center;
+      margin-bottom: 8px;
+      color: #263238;
+    }
+
+    .subtitle {
+      text-align: center;
+      color: #777;
+      font-size: 14px;
+      margin-bottom: 25px;
+    }
+
+    .input-group {
+      margin-bottom: 16px;
+    }
+
+    label {
+      display: block;
+      margin-bottom: 7px;
+      font-size: 14px;
+      font-weight: bold;
+      color: #444;
+    }
+
+    input {
+      width: 100%;
+      padding: 12px;
+      border: 1px solid #d5dfe0;
+      border-radius: 9px;
+      outline: none;
+      font-size: 14px;
+    }
+
+    input:focus {
+      border-color: #159b83;
+    }
+
+    button {
+      width: 100%;
+      padding: 13px;
+      background: #159b83;
+      color: white;
+      border: none;
+      border-radius: 9px;
+      font-size: 16px;
+      font-weight: bold;
+      cursor: pointer;
+      margin-top: 5px;
+    }
+
+    button:hover {
+      background: #107c69;
+    }
+
+    button:disabled {
+      background: #8abdb3;
+      cursor: not-allowed;
+    }
+
+    #message {
+      margin-top: 15px;
+      font-size: 14px;
+      text-align: center;
+      line-height: 1.5;
+      overflow-wrap: anywhere;
+    }
+
+    .login-text {
+      text-align: center;
+      margin-top: 20px;
+      font-size: 14px;
+      color: #555;
+    }
+
+    a {
+      color: #159b83;
+      font-weight: bold;
+      text-decoration: none;
+    }
+
+    a:hover {
+      text-decoration: underline;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="signup-box">
+    <div class="logo">💚 MediSathi</div>
+    <h2>Create Account</h2>
+    <p class="subtitle">Your health, our priority.</p>
+
+    <form id="signupForm">
+      <div class="input-group">
+        <label for="fullName">Full Name</label>
+        <input
+          type="text"
+          id="fullName"
+          placeholder="Enter your full name"
+          autocomplete="name"
+          required
+        >
+      </div>
+
+      <div class="input-group">
+        <label for="email">Email Address</label>
+        <input
+          type="email"
+          id="email"
+          placeholder="Enter your email"
+          autocomplete="email"
+          required
+        >
+      </div>
+
+      <div class="input-group">
+        <label for="phone">Phone Number</label>
+        <input
+          type="tel"
+          id="phone"
+          placeholder="10-digit mobile number"
+          inputmode="numeric"
+          pattern="[0-9]{10}"
+          maxlength="10"
+          autocomplete="tel"
+          required
+        >
+      </div>
+
+      <div class="input-group">
+        <label for="password">Password</label>
+        <input
+          type="password"
+          id="password"
+          placeholder="At least 6 characters"
+          minlength="6"
+          autocomplete="new-password"
+          required
+        >
+      </div>
+
+      <div class="input-group">
+        <label for="confirmPassword">Confirm Password</label>
+        <input
+          type="password"
+          id="confirmPassword"
+          placeholder="Enter password again"
+          minlength="6"
+          autocomplete="new-password"
+          required
+        >
+      </div>
+
+      <button type="submit" id="signupBtn">Create Account</button>
+      <p id="message" role="status" aria-live="polite"></p>
+    </form>
+
+    <p class="login-text">
+      Already have an account?
+      <a href="login.html">Log In</a>
+    </p>
+  </div>
+
+  <script type="module">
+    import { initializeApp, getApps }
+      from "https://www.gstatic.com/firebasejs/12.4.0/firebase-app.js";
+
+    import { getAuth, createUserWithEmailAndPassword, updateProfile }
+      from "https://www.gstatic.com/firebasejs/12.4.0/firebase-auth.js";
+
+    // Apne login.html mein use kiye gaye wahi Firebase config
+    // values yahan bhi paste karein.
+    const firebaseConfig = {
+       apiKey: "AIzaSyBr5Xb8YriHxrEFxZBrB5ym39bXSJZVR5Y",
+    authDomain: "medisathi-88907.firebaseapp.com",
+    projectId: "medisathi-88907",
+    storageBucket: "medisathi-88907.firebasestorage.app",
+    messagingSenderId: "193212409596",
+    appId: "1:193212409596:web:1fd901ab6ca0d7a0059979",
+    measurementId: "G-8VCS53GKK0"
+    };
+
+    const app = getApps().length
+      ? getApps()[0]
+      : initializeApp(firebaseConfig);
+
+    const auth = getAuth(app);
+
+    const form = document.getElementById("signupForm");
+    const signupBtn = document.getElementById("signupBtn");
+    const message = document.getElementById("message");
+
+    form.addEventListener("submit", async function (event) {
+      event.preventDefault();
+
+      const name = document.getElementById("fullName").value.trim();
+      const email = document.getElementById("email").value.trim();
+      const phone = document.getElementById("phone").value.trim();
+      const password = document.getElementById("password").value;
+      const confirmPassword =
+        document.getElementById("confirmPassword").value;
+
+      message.textContent = "";
+      message.style.color = "#d93025";
+
+      if (!/^[0-9]{10}$/.test(phone)) {
+        message.textContent = "Please enter a valid 10-digit phone number.";
+        return;
+      }
+
+      if (password.length < 6) {
+        message.textContent = "Password must contain at least 6 characters.";
+        return;
+      }
+
+      if (password !== confirmPassword) {
+        message.textContent = "Passwords do not match.";
+        return;
+      }
+
+      signupBtn.disabled = true;
+      signupBtn.textContent = "Creating Account...";
+
+      try {
+        const result = await createUserWithEmailAndPassword(
+          auth,
+          email,
+          password
+        );
+
+        await updateProfile(result.user, {
+          displayName: name
+        });
+
+        // Abhi phone number sirf form mein collect hota hai;
+        // use Firebase Authentication mein save nahi kiya ja raha.
+        message.style.color = "#12805c";
+        message.textContent = "Account created successfully! Opening dashboard...";
+
+        setTimeout(function () {
+          window.location.href = "dashboard.html";
+        }, 1000);
+
+      } catch (error) {
+        const errors = {
+          "auth/email-already-in-use":
+            "This email already has an account. Please log in.",
+          "auth/invalid-email":
+            "Please enter a valid email address.",
+          "auth/weak-password":
+            "Please choose a stronger password.",
+          "auth/network-request-failed":
+            "Network error. Please check your internet connection.",
+          "auth/operation-not-allowed":
+            "Email/Password sign-up is not enabled in Firebase."
+        };
+
+        message.textContent =
+          errors[error.code] || "Account could not be created. Please try again.";
+
+      } finally {
+        signupBtn.disabled = false;
+        signupBtn.textContent = "Create Account";
+      }
+    });
+  </script>
+</body>
+</html>
+

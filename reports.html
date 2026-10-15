@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MediSathi - Medical Report Explainer</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+        }
+
+        body {
+            background: #f0fdf8;
+            padding: 20px;
+            color: #1e293b;
+        }
+
+        .container {
+            max-width: 500px;
+            margin: 20px auto;
+            background: white;
+            padding: 25px;
+            border-radius: 20px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.06);
+        }
+
+        .back {
+            display: inline-block;
+            margin-bottom: 22px;
+            color: #059669;
+            text-decoration: none;
+        }
+
+        h1 {
+            font-size: 25px;
+            color: #059669;
+            margin-bottom: 10px;
+        }
+
+        .subtitle {
+            color: #64748b;
+            font-size: 14px;
+            line-height: 1.6;
+            margin-bottom: 24px;
+        }
+
+        label {
+            display: block;
+            margin: 16px 0 8px;
+            font-size: 14px;
+            font-weight: bold;
+        }
+
+        select, textarea {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #cbd5e1;
+            border-radius: 10px;
+            font-size: 14px;
+            background: white;
+        }
+
+        textarea {
+            min-height: 130px;
+            resize: vertical;
+        }
+
+        button {
+            width: 100%;
+            padding: 14px;
+            margin-top: 20px;
+            border: none;
+            border-radius: 10px;
+            background: #10b981;
+            color: white;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background: #059669;
+        }
+
+        .result {
+            display: none;
+            margin-top: 22px;
+            padding: 16px;
+            border-radius: 12px;
+            background: #ecfdf5;
+            border: 1px solid #a7f3d0;
+            line-height: 1.7;
+            overflow-wrap: anywhere;
+        }
+
+        .result h2 {
+            color: #047857;
+            font-size: 18px;
+            margin-bottom: 10px;
+        }
+
+        .notice {
+            margin-top: 18px;
+            color: #64748b;
+            font-size: 12px;
+            line-height: 1.6;
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="container">
+
+    <a href="dashboard.html" class="back">← Back to Dashboard</a>
+
+    <h1>📋 Medical Report Explainer</h1>
+
+    <p class="subtitle">
+        Apni medical report ke results ko samajhne ke liye
+        test ka naam aur report ki details enter karein.
+    </p>
+
+    <form id="reportForm">
+
+        <label for="reportImage">📷 Upload Medical Report</label>
+
+<input
+    type="file"
+    id="reportImage"
+    accept="image/*,.pdf"
+>
+
+<div id="previewContainer" style="display:none; margin-top:15px;">
+    <p style="margin-bottom:10px;">Selected Report Preview:</p>
+
+    <img
+        id="reportPreview"
+        alt="Medical report preview"
+        style="width:100%; border-radius:12px; border:1px solid #ddd;"
+    >
+
+    <button type="button" id="removeImage"
+        style="background:#ef4444; margin-top:10px;">
+        Remove Photo
+    </button>
+</div>
+
+        <select id="reportType" required>
+            <option value="">Select report type</option>
+            <option value="CBC">CBC / Blood Test</option>
+            <option value="Blood Sugar">Blood Sugar Test</option>
+            <option value="Lipid Profile">Lipid Profile</option>
+            <option value="Other">Other Report</option>
+        </select>
+
+        <label for="reportDetails">Report ki details</label>
+
+        <textarea
+            id="reportDetails"
+            placeholder="Test ka naam, result aur report mein diya reference range likhein..."
+            required
+        ></textarea>
+
+        <button type="submit">Understand My Report</button>
+
+    </form>
+
+    <div class="result" id="result" role="status" aria-live="polite">
+        <h2>Report Information</h2>
+        <p id="resultText"></p>
+    </div>
+
+    <p class="notice">
+        Important: Yeh demo report ka AI analysis nahi karta.
+        Results ko samajhne aur diagnosis ke liye doctor se salah lein.
+        Apni report ki personal details yahan enter na karein.
+    </p>
+
+</div>
+
+<script>
+    const reportForm = document.getElementById("reportForm");
+    const result = document.getElementById("result");
+    const resultText = document.getElementById("resultText");
+
+    reportForm.addEventListener("submit", function(event) {
+        event.preventDefault();
+
+        const reportType = document.getElementById("reportType").value;
+        const reportDetails = document.getElementById("reportDetails").value.trim();
+
+        if (!reportType || !reportDetails) {
+            alert("Please fill in all fields.");
+            return;
+        }
+
+        resultText.textContent =
+            "Aapne " + reportType + " select ki hai. " +
+            "Aapki report ki details record ho gayi hain. " +
+            "Abhi is demo mein AI analysis enabled nahi hai. " +
+            "Report ke results aur reference ranges ko doctor se samjhein.";
+
+        result.style.display = "block";
+        result.scrollIntoView({ behavior: "smooth", block: "nearest" });
+    });
+</script>
+const reportImage = document.getElementById("reportImage");
+const previewContainer = document.getElementById("previewContainer");
+const reportPreview = document.getElementById("reportPreview");
+const removeImage = document.getElementById("removeImage");
+
+let previewURL = null;
+
+reportImage.addEventListener("change", function () {
+    const file = reportImage.files[0];
+
+    if (!file) return;
+
+    if (file.size > 5 * 1024 * 1024) {
+        alert("Please select a file smaller than 5 MB.");
+        reportImage.value = "";
+        return;
+    }
+
+    if (file.type === "application/pdf") {
+        if (previewURL) URL.revokeObjectURL(previewURL);
+
+        previewURL = null;
+        reportPreview.style.display = "none";
+        previewContainer.style.display = "block";
+
+        let pdfMessage = document.getElementById("pdfMessage");
+
+        if (!pdfMessage) {
+            pdfMessage = document.createElement("p");
+            pdfMessage.id = "pdfMessage";
+            previewContainer.prepend(pdfMessage);
+        }
+
+        pdfMessage.textContent = "PDF selected: " + file.name;
+        return;
+    }
+
+    if (!file.type.startsWith("image/")) {
+        alert("Please select an image or PDF file.");
+        reportImage.value = "";
+        return;
+    }
+
+    if (previewURL) URL.revokeObjectURL(previewURL);
+
+    previewURL = URL.createObjectURL(file);
+
+    const pdfMessage = document.getElementById("pdfMessage");
+    if (pdfMessage) pdfMessage.remove();
+
+    reportPreview.src = previewURL;
+    reportPreview.style.display = "block";
+    previewContainer.style.display = "block";
+});
+
+removeImage.addEventListener("click", function () {
+    reportImage.value = "";
+    reportPreview.removeAttribute("src");
+    reportPreview.style.display = "block";
+    previewContainer.style.display = "none";
+
+    const pdfMessage = document.getElementById("pdfMessage");
+    if (pdfMessage) pdfMessage.remove();
+
+    if (previewURL) {
+        URL.revokeObjectURL(previewURL);
+        previewURL = null;
+    }
+});
+</body>
+</html>

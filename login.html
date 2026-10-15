@@ -1,0 +1,400 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Login Page</title>
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    }
+
+    body {
+      background-color: #f4faf8;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      color: #333;
+    }
+
+    .app-container {
+      width: 100%;
+      max-width: 414px;
+      background: #f4faf8;
+      border-radius: 30px;
+      overflow: hidden;
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.05);
+      position: relative;
+    }
+
+    .header-section {
+      padding: 40px 24px 20px 24px;
+      position: relative;
+    }
+
+    .header-section h1 {
+      font-size: 28px;
+      font-weight: 700;
+      color: #0f172a;
+      margin-bottom: 8px;
+    }
+
+    .header-section p {
+      font-size: 14px;
+      color: #64748b;
+      line-height: 1.4;
+      max-width: 60%;
+    }
+
+    .doctor-img {
+      position: absolute;
+      right: 10px;
+      top: 20px;
+      width: 150px;
+      height: auto;
+      pointer-events: none;
+    }
+
+    .card {
+      background: #ffffff;
+      border-radius: 24px;
+      padding: 24px;
+      margin: 0 16px 20px 16px;
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.03);
+    }
+
+    .input-group {
+      margin-bottom: 18px;
+    }
+
+    .input-group label {
+      display: block;
+      font-size: 13px;
+      font-weight: 600;
+      color: #1e293b;
+      margin-bottom: 8px;
+    }
+
+    .input-wrapper {
+      display: flex;
+      align-items: center;
+      background-color: #f8fafc;
+      border: 1px solid #e2e8f0;
+      border-radius: 12px;
+      padding: 12px 14px;
+    }
+
+    .input-wrapper i {
+      color: #10b981;
+      font-size: 16px;
+      margin-right: 10px;
+    }
+
+    .input-wrapper input {
+      border: none;
+      background: transparent;
+      outline: none;
+      width: 100%;
+      font-size: 14px;
+      color: #334155;
+    }
+
+    .input-wrapper input::placeholder {
+      color: #94a3b8;
+    }
+
+    .eye-icon {
+      color: #94a3b8 !important;
+      cursor: pointer;
+    }
+
+    .forgot-pass {
+      text-align: right;
+      margin-top: -10px;
+      margin-bottom: 20px;
+    }
+
+    .forgot-pass a {
+      color: #10b981;
+      font-size: 12px;
+      font-weight: 600;
+      text-decoration: none;
+    }
+
+    .btn-login {
+      width: 100%;
+      background-color: #10b981;
+      color: white;
+      border: none;
+      padding: 14px;
+      border-radius: 12px;
+      font-size: 15px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+
+    .btn-login:hover {
+      background-color: #059669;
+    }
+
+    .divider {
+      display: flex;
+      align-items: center;
+      text-align: center;
+      margin: 20px 0;
+      color: #94a3b8;
+      font-size: 12px;
+    }
+
+    .divider::before, .divider::after {
+      content: '';
+      flex: 1;
+      border-bottom: 1px solid #e2e8f0;
+    }
+
+    .divider span {
+      padding: 0 10px;
+    }
+
+    .social-login {
+      display: flex;
+      justify-content: space-between;
+      gap: 10px;
+      margin-bottom: 20px;
+    }
+
+    .social-btn {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      padding: 10px;
+      border: 1px solid #e2e8f0;
+      border-radius: 10px;
+      background: white;
+      font-size: 12px;
+      font-weight: 600;
+      color: #334155;
+      cursor: pointer;
+    }
+
+    .signup-text {
+      text-align: center;
+      font-size: 13px;
+      color: #64748b;
+    }
+
+    .signup-text a {
+      color: #10b981;
+      text-decoration: none;
+      font-weight: 600;
+    }
+
+    .features-section {
+      display: flex;
+      justify-content: space-between;
+      padding: 10px 20px 30px 20px;
+      text-align: center;
+    }
+
+    .feature-card {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 0 4px;
+    }
+
+    .feature-icon {
+      width: 44px;
+      height: 44px;
+      background-color: #e6f4f1;
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #10b981;
+      font-size: 18px;
+      margin-bottom: 8px;
+    }
+
+    .feature-card h4 {
+      font-size: 11px;
+      font-weight: 700;
+      color: #1e293b;
+      margin-bottom: 4px;
+    }
+
+    .feature-card p {
+      font-size: 10px;
+      color: #94a3b8;
+      line-height: 1.2;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="app-container">
+    <!-- Header Section -->
+    <div class="header-section">
+      <h1>Welcome Back</h1>
+      <p>Log in to your account to continue your health journey</p>
+      <img src="https://cdni.iconscout.com/illustration/premium/thumb/male-doctor-3D-illustration-download-in-png-blend-fbx-gltf-file-formats--medical-physician-health-care-professions-pack-people-illustrations-6853609.png"
+     alt="Doctor"
+     class="doctor-img">
+    </div>
+
+    <!-- Login Card -->
+    <div class="card">
+      <div class="input-group">
+        <label>Email / Phone Number</label>
+        <div class="input-wrapper">
+          <i class="far fa-user"></i>
+          <input type="text" placeholder="Enter your email or phone number">
+        </div>
+      </div>
+
+      <div class="input-group">
+        <label>Password</label>
+        <div class="input-wrapper">
+          <i class="fas fa-lock"></i>
+          <input 
+                type="password"
+                id="loginPassword"
+                placeholder="Enter your Password"
+          >
+          <i class="far fa-eye eye-icon"></i>
+        </div>
+      </div>
+
+      <div class="forgot-pass">
+        <a href="#">Forgot Password?</a>
+      </div>
+
+      <button type = "button" class="btn-login" id="loginBtn">Log In</button>
+
+      <div class="divider">
+        <span>or continue with</span>
+      </div>
+
+      <div class="social-login">
+        <button class="social-btn">
+          <i class="fab fa-google" style="color: #ea4335;"></i> Google
+        </button>
+        <button class="social-btn">
+          <i class="fab fa-facebook-f" style="color: #1877f2;"></i> Facebook
+        </button>
+        <button class="social-btn">
+          <i class="fab fa-apple"></i> Apple
+        </button>
+      </div>
+
+      <div class="signup-text">
+        Don't have an account? <a href="signup.html">Sign Up</a>
+      </div>
+    </div>
+
+    <!-- Features Footer Section -->
+    <div class="features-section">
+      <div class="feature-card">
+        <div class="feature-icon"><i class="fas fa-shield-alt"></i></div>
+        <h4>Secure & Private</h4>
+        <p>Your data is safe with us</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon"><i class="fas fa-comment-dots"></i></div>
+        <h4>AI Health Assistant</h4>
+        <p>Get smart health suggestions</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon"><i class="fas fa-hospital"></i></div>
+        <h4>Find Hospitals</h4>
+        <p>Locate best hospitals near you</p>
+      </div>
+    </div>
+  </div>
+<script type="module">
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/12.4.0/firebase-app.js";
+  import {
+    getAuth,
+    signInWithEmailAndPassword
+  } from "https://www.gstatic.com/firebasejs/12.4.0/firebase-auth.js";
+
+  const firebaseConfig = {
+     apiKey: "AIzaSyBr5Xb8YriHxrEFxZBrB5ym39bXSJZVR5Y",
+  authDomain: "medisathi-88907.firebaseapp.com",
+  projectId: "medisathi-88907",
+  storageBucket: "medisathi-88907.firebasestorage.app",
+  messagingSenderId: "193212409596",
+  appId: "1:193212409596:web:1fd901ab6ca0d7a0059979",
+  measurementId: "G-8VCS53GKK0"
+  };
+
+  const app = initializeApp(firebaseConfig);
+  const auth = getAuth(app);
+
+  const loginBtn = document.querySelector(".btn-login");
+
+  loginBtn.addEventListener("click", async function (event) {
+    event.preventDefault();
+
+    const inputs = document.querySelectorAll("input");
+    let email = "";
+    let password = "";
+
+    inputs.forEach(function (input) {
+      if (input.type === "password") {
+        password = input.value.trim();
+      } else if (input.type === "text" || input.type === "email") {
+        email = input.value.trim();
+      }
+    });
+
+    if (!email || !password) {
+      alert("Please enter your email and password.");
+      return;
+    }
+
+    loginBtn.disabled = true;
+
+    try {
+      await signInWithEmailAndPassword(auth, email, password);
+      window.location.href = "dashboard.html";
+    } catch (error) {
+      const messages = {
+        "auth/invalid-credential": "Email ya password galat hai.",
+        "auth/user-not-found": "Is email se account nahi mila. Pehle sign up karein.",
+        "auth/wrong-password": "Password galat hai.",
+        "auth/invalid-email": "Valid email address enter karein.",
+        "auth/too-many-requests": "Bahut attempts hue hain. Thodi der baad try karein."
+      };
+
+      alert(messages[error.code] || "Login nahi hua. Please dobara try karein.");
+    } finally {
+      loginBtn.disabled = false;
+    }
+  });
+
+</script>
+<script>
+  const passwordInput = document.getElementById("loginPassword");
+  const eyeIcon = document.querySelector(".eye-icon");
+
+  eyeIcon.addEventListener("click", function () {
+    const showPassword = passwordInput.type === "password";
+
+    passwordInput.type = showPassword ? "text" : "password";
+
+    eyeIcon.classList.toggle("fa-eye", !showPassword);
+    eyeIcon.classList.toggle("fa-eye-slash", showPassword);
+  });
+</script>
+</body>
+</html>
