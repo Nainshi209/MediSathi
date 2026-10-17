@@ -1,0 +1,249 @@
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MediSathi - Appointment</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+        }
+
+        body {
+            background: #f0fdf8;
+            color: #1e293b;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 500px;
+            margin: 20px auto;
+            padding: 25px;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.06);
+        }
+
+        .back {
+            display: inline-block;
+            margin-bottom: 22px;
+            color: #059669;
+            text-decoration: none;
+        }
+
+        h1 {
+            color: #059669;
+            font-size: 25px;
+            margin-bottom: 10px;
+        }
+
+        .subtitle {
+            color: #64748b;
+            font-size: 14px;
+            line-height: 1.6;
+            margin-bottom: 22px;
+        }
+
+        label {
+            display: block;
+            margin: 16px 0 8px;
+            font-size: 14px;
+            font-weight: bold;
+        }
+
+        input, select, textarea {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #cbd5e1;
+            border-radius: 10px;
+            font-size: 14px;
+            background: white;
+        }
+
+        textarea {
+            min-height: 80px;
+            resize: vertical;
+        }
+
+        button {
+            width: 100%;
+            padding: 14px;
+            margin-top: 22px;
+            border: none;
+            border-radius: 10px;
+            background: #10b981;
+            color: white;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background: #059669;
+        }
+
+        .result {
+            display: none;
+            margin-top: 20px;
+            padding: 16px;
+            border-radius: 12px;
+            background: #ecfdf5;
+            border: 1px solid #a7f3d0;
+            line-height: 1.7;
+            overflow-wrap: anywhere;
+        }
+
+        .notice {
+            margin-top: 18px;
+            color: #64748b;
+            font-size: 12px;
+            line-height: 1.6;
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="container">
+
+    <a href="dashboard.html" class="back">← Back to Dashboard</a>
+
+    <h1>📅 Book an Appointment</h1>
+
+    <p class="subtitle">
+        Fill in your details to submit an appointment request.
+    </p>
+
+    <form id="appointmentForm">
+
+        <label for="patientName">Patient Name</label>
+        <input
+            type="text"
+            id="patientName"
+            placeholder="Enter patient name"
+            maxlength="80"
+            required
+        >
+
+        <label for="department">Select Department</label>
+        <select id="department" required>
+            <option value="">Choose a department</option>
+            <option value="General Physician">General Physician</option>
+            <option value="Cardiology">Cardiology (Heart)</option>
+            <option value="Dermatology">Dermatology (Skin)</option>
+            <option value="Pediatrics">Pediatrics (Child Health)</option>
+            <option value="Orthopedics">Orthopedics (Bones)</option>
+            <option value="Gynecology">Gynecology</option>
+        </select>
+
+        <label for="appointmentDate">Preferred Date</label>
+        <input type="date" id="appointmentDate" required>
+
+        <label for="appointmentTime">Preferred Time</label>
+        <select id="appointmentTime" required>
+            <option value="">Choose a preferred time</option>
+            <option value="09:00">9:00 AM</option>
+            <option value="10:00">10:00 AM</option>
+            <option value="11:00">11:00 AM</option>
+            <option value="12:00">12:00 PM</option>
+            <option value="14:00">2:00 PM</option>
+            <option value="15:00">3:00 PM</option>
+            <option value="16:00">4:00 PM</option>
+        </select>
+
+        <label for="phone">Contact Number</label>
+        <input
+            type="tel"
+            id="phone"
+            placeholder="Enter 10-digit mobile number"
+            inputmode="numeric"
+            pattern="[0-9]{10}"
+            maxlength="10"
+            required
+        >
+
+        <label for="reason">Reason for Appointment</label>
+        <textarea
+            id="reason"
+            placeholder="Briefly describe the reason (optional)"
+            maxlength="500"
+        ></textarea>
+
+        <button type="submit">Submit Appointment Request</button>
+
+    </form>
+
+    <div class="result" id="result" role="status" aria-live="polite"></div>
+
+    <p class="notice">
+        Note: This is a demo appointment request. No doctor or hospital
+        booking is confirmed. Please contact the hospital to confirm
+        availability. For emergencies, seek immediate medical help.
+    </p>
+
+</div>
+
+<script>
+    const appointmentForm = document.getElementById("appointmentForm");
+    const appointmentDate = document.getElementById("appointmentDate");
+    const result = document.getElementById("result");
+
+    // Prevent selecting a past date.
+    const today = new Date();
+    const localToday = new Date(
+        today.getTime() - today.getTimezoneOffset() * 60000
+    ).toISOString().split("T")[0];
+
+    appointmentDate.min = localToday;
+
+    appointmentForm.addEventListener("submit", function(event) {
+        event.preventDefault();
+
+        const patientName =
+            document.getElementById("patientName").value.trim();
+
+        const department =
+            document.getElementById("department").value;
+
+        const date = appointmentDate.value;
+
+        const time =
+            document.getElementById("appointmentTime").value;
+
+        const phone =
+            document.getElementById("phone").value.trim();
+
+        if (!/^[0-9]{10}$/.test(phone)) {
+            alert("Please enter a valid 10-digit mobile number.");
+            return;
+        }
+
+        if (date < localToday) {
+            alert("Please select today or a future date.");
+            return;
+        }
+
+        result.style.display = "block";
+        result.textContent =
+            "Appointment request prepared successfully! " +
+            "Patient: " + patientName +
+            " | Department: " + department +
+            " | Preferred Date: " + date +
+            " | Preferred Time: " + time +
+            ". Please contact the hospital to confirm availability.";
+
+        result.scrollIntoView({
+            behavior: "smooth",
+            block: "nearest"
+        });
+    });
+</script>
+
+</body>
+</html>
+```
