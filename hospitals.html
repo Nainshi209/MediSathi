@@ -165,4 +165,63 @@
 
     <p class="notice">
         Note: Yeh demo Google Maps par search kholta hai.
-        Hospital ki
+        Hospital ki  emergency facilities aur opening hours jaane ke
+        liye hospital se directly confirm karein. Emergency mein
+        search results ka intezar na karein.
+    </p>
+
+</div>
+
+<script>
+    const searchForm = document.getElementById("searchForm");
+    const results = document.getElementById("results");
+
+    const facilityNames = {
+        hospital: "hospitals",
+        emergency: "hospitals with emergency services",
+        child: "child specialist hospitals",
+        heart: "heart specialist hospitals",
+        clinic: "clinics"
+    };
+
+    searchForm.addEventListener("submit", function(event) {
+        event.preventDefault();
+
+        const city = document.getElementById("city").value.trim();
+        const facility = document.getElementById("facility").value;
+
+        if (!city) {
+            alert("Please enter your city or area.");
+            return;
+        }
+
+        const query = facilityNames[facility] + " in " + city;
+
+        const card = document.createElement("div");
+        card.className = "hospital-card";
+
+        const heading = document.createElement("h2");
+        heading.textContent = "Search hospitals near " + city;
+
+        const description = document.createElement("p");
+        description.textContent =
+            "Google Maps par " + facilityNames[facility] +
+            " ke results dekhein. Jaane se pehle hospital ki details confirm karein.";
+
+        const link = document.createElement("a");
+        link.href = "https://www.google.com/maps/search/?api=1&query=" +
+            encodeURIComponent(query);
+        link.target = "_blank";
+        link.rel = "noopener noreferrer";
+        link.textContent = "View Hospital Results →";
+
+        card.appendChild(heading);
+        card.appendChild(description);
+        card.appendChild(link);
+
+        results.replaceChildren(card);
+    });
+</script>
+
+</body>
+</html>

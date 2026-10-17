@@ -121,8 +121,7 @@
     <h1>📋 Medical Report Explainer</h1>
 
     <p class="subtitle">
-        Apni medical report ke results ko samajhne ke liye
-        test ka naam aur report ki details enter karein.
+        Enter the test name and report details to understand your medical report results.
     </p>
 
     <form id="reportForm">
@@ -184,9 +183,50 @@
 </div>
 
 <script>
-    const reportForm = document.getElementById("reportForm");
-    const result = document.getElementById("result");
-    const resultText = document.getElementById("resultText");
+    reportForm.addEventListener("submit", async function(event) {
+    event.preventDefault();
+
+    const reportType = document.getElementById("reportType").value;
+    const reportDetails = document.getElementById("reportDetails").value.trim();
+
+    if (!reportType || !reportDetails) {
+        alert("Please fill in all fields.");
+        return;
+    }
+
+    result.style.display = "block";
+    resultText.textContent = "Connecting to MediSathi backend...";
+
+    try {
+        const response = await fetch("http://127.0.0.1:5000/analyze", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+                reportType: reportType,
+                reportDetails: reportDetails
+            })
+        });
+
+        const data = await response.json();
+
+        if (!response.ok) {
+            throw new Error(data.error || "Something went wrong.");
+        }
+
+        resultText.textContent = data.message;
+
+    } catch (error) {
+        resultText.textContent =
+            "Backend se connection nahi ho paya. " + error.message;
+    }
+
+    result.scrollIntoView({
+        behavior: "smooth",
+        block: "nearest"
+    });
+});
 
     reportForm.addEventListener("submit", function(event) {
         event.preventDefault();
@@ -209,6 +249,7 @@
         result.scrollIntoView({ behavior: "smooth", block: "nearest" });
     });
 </script>
+<script>
 const reportImage = document.getElementById("reportImage");
 const previewContainer = document.getElementById("previewContainer");
 const reportPreview = document.getElementById("reportPreview");
@@ -278,5 +319,6 @@ removeImage.addEventListener("click", function () {
         previewURL = null;
     }
 });
+</script>
 </body>
 </html>

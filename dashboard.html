@@ -259,25 +259,32 @@
 
 <div class="app">
 
-    <header>
-        <div class="topbar">
-            <div class="logo">
-                <i class="fas fa-heart-pulse"></i>MediSathi
-            </div>
-            <div class="welcome">
-            <h1>Hello, Welcome! 👋</h1>
-            <p>Your Health, Our Priority💚</p>
+   <header>
+    <div class="topbar">
+        <div class="logo">
+            <i class="fas fa-heart-pulse"></i>MediSathi
         </div>
 
-        <div class="search-box">
-            <i class="fas fa-search"></i>
-            <input
-                type="search"
-                id="featureSearch"
-                placeholder="Search health services..."
-            >
+        <div class="profile-icon" id="profileBtn"
+             title="My Profile" role="button" tabindex="0">
+            <i class="fas fa-user"></i>
         </div>
-    </header>
+    </div>
+
+    <div class="welcome">
+        <h1>Hello, Welcome! 👋</h1>
+        <p>Your Health, Our Priority💚</p>
+    </div>
+
+    <div class="search-box">
+        <i class="fas fa-search"></i>
+        <input
+            type="search"
+            id="featureSearch"
+            placeholder="Search health services..."
+        >
+    </div>
+   </header>
 
     <main>
         <div class="section-heading">
@@ -372,7 +379,7 @@
 import { initializeApp, getApps }
   from "https://www.gstatic.com/firebasejs/12.4.0/firebase-app.js";
 
-import { getAuth, onAuthStateChanged, signOut }
+import { getAuth, onAuthStateChanged, signOut , updateProfile}
   from "https://www.gstatic.com/firebasejs/12.4.0/firebase-auth.js";
 
 const firebaseConfig = {
@@ -391,6 +398,55 @@ const app = getApps().length
   : initializeApp(firebaseConfig);
 
 const auth = getAuth(app);
+const profileBtn = document.getElementById("profileBtn");
+
+onAuthStateChanged(auth, async function(user) {
+    if (!user) {
+        window.location.replace("login.html");
+        return;
+    }
+
+    profileBtn.onclick = async function() {
+        let name = user.displayName;
+
+        // Agar purane account mein naam save nahi hai
+        if (!name) {
+            name = prompt("Apna full name enter karein:");
+
+            if (!name || !name.trim()) {
+                return;
+            }
+
+            name = name.trim();
+
+            try {
+                await updateProfile(user, {
+                    displayName: name
+                });
+
+                alert("Name successfully saved!");
+            } catch (error) {
+                alert("Name save nahi hua. Dobara try karein.");
+                console.error(error);
+                return;
+            }
+        }
+
+        const choice = prompt(
+            `MediSathi Profile\n\nName: ${name}\nEmail: ${user.email || "Email not available"}\n\nTo log out, enter logout.`
+        );
+
+        if (choice && choice.trim().toUpperCase() === "LOGOUT") {
+            try {
+                await signOut(auth);
+                window.location.replace("login.html");
+            } catch (error) {
+                alert("Did not logout, please try again.");
+                console.error(error);
+            }
+        }
+    };
+});
   
 const searchInput = document.getElementById("featureSearch");
 const featureCards = document.querySelectorAll(".feature");
@@ -441,8 +497,8 @@ document.querySelectorAll(".nav-item").forEach(function (item) {
         } else if (section === "appointments") {
             alert("Appointments feature will be available soon!");
         } else if (section === "profile") {
-            alert("Profile feature will be available soon!");
-        }
+         document.getElementById("profileBtn").click();
+         }
     });
 });
 </script>

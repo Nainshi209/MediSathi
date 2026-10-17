@@ -121,36 +121,36 @@
     <h1>🩺 Symptom Checker</h1>
 
     <p class="subtitle">
-        Apne symptoms batayein. MediSathi aapko general health
-        information aur agle steps samajhne mein madad karega.
+        Share your symptoms. MediSathi will help you 
+        with general health information and next steps.
     </p>
 
     <form id="symptomForm">
 
-        <label for="symptoms">Aapko kya symptoms hain?</label>
+        <label for="symptoms">What symptoms do you have ?</label>
 
         <textarea
             id="symptoms"
-            placeholder="Jaise: headache, cough, fever..."
+            placeholder="Like: headache, cough, fever..."
             required
         ></textarea>
 
-        <label for="duration">Symptoms kab se hain?</label>
+        <label for="duration">How long have the symptoms been?</label>
 
         <select id="duration" required>
             <option value="">Select duration</option>
-            <option value="today">Aaj se</option>
-            <option value="few-days">2–3 din se</option>
-            <option value="longer">3 din se zyada</option>
+            <option value="today">Today</option>
+            <option value="few-days"> 1-3 days</option>
+            <option value="longer">More than 3 days</option>
         </select>
 
-        <label for="severity">Symptoms kitne severe hain?</label>
+        <label for="severity">How severe are the symptoms?</label>
 
         <select id="severity" required>
             <option value="">Select severity</option>
-            <option value="mild">Halkay</option>
+            <option value="mild">Mild</option>
             <option value="moderate">Moderate</option>
-            <option value="severe">Bahut zyada</option>
+            <option value="severe">Severe</option>
         </select>
 
         <button type="submit">Check Symptoms</button>
@@ -163,10 +163,9 @@
     </div>
 
     <p class="notice">
-        Important: Yeh basic demo hai, AI diagnosis nahi.
-        Agar symptoms severe hain ya aapko saans lene mein dikkat,
-        chest pain, behoshi ya koi aur emergency symptom hai,
-        to turant medical help lein. Is tool ke result ka intezar na karein.
+        Important: This is basic demo, not a diagnosis. If symptoms are severe or you have,
+        difficulty breathing, chest pain, fainting, or any other emergency symptoms, seek medical help 
+        immediately. Do not wait for the result of this too.
     </p>
 
 </div>
@@ -190,17 +189,40 @@
             alert("Please fill in all fields.");
             return;
         }
+        const symptomText = symptoms.toLowerCase().trim();
+
+        let guidance = "";
+        let careTips = "";
 
         if (severity === "severe") {
-            resultText.textContent =
-                "Aapne symptoms ko bahut severe bataya hai. Kripya jald se jald medical professional se assessment karwayein. Agar emergency ke signs hain, turant emergency help lein.";
-        } else if (duration === "longer") {
-            resultText.textContent =
-                "Symptoms 3 din se zyada hain. Medical professional se salah lena achha rahega, khaaskar agar symptoms badh rahe hain ya theek nahi ho rahe.";
-        } else {
-            resultText.textContent =
-                "Yeh tool aapke symptoms ka diagnosis nahi kar sakta. Apne symptoms par nazar rakhein, aaram karein aur zarurat ke mutabik medical professional se salah lein. Symptoms badhne par medical help lein.";
+            guidance = "Aapne symtoms ko severe bataya hai. Jaldi medical professional se assessment karwayein. ";
+            careTips = "Ager saans lene mein dikkat, behoshi ya chest pain emergency signs hain, to turant emergency medical help lein.";
+        }else if (duration === "longer") {
+          guidance = "Aapke symptoms 3 din se zyada hain. Medical professional se salah lein, khaaskar agar symptoms badh rahe hain ya theek nahi ho rahe.";
+          careTips = "Apne symptoms par nazar rakhein aur unki duration aur changes note karein.";
+
+        } else if (symptomText.includes("fever")) {
+           guidance = "Aapne fever mention kiya hai. Yeh tool fever ki wajah ya diagnosis confirm nahi kar sakta.";
+           careTips = "Aaram karein, paani peete rahein aur temperature note karein. Agar fever badhe, theek na ho ya aapko zyada pareshani ho, to medical professional se salah lein.";
+
+        } else if (symptomText.includes("headache")) {
+            guidance = "Aapne headache mention kiya hai. Headache ke kai possible causes ho sakte hain.";
+            careTips = "Aaram karein, paani peete rahein aur screen se break lein. Agar headache bahut severe ho, achanak shuru ho ya doosre concerning symptoms ke saath ho, to medical help lein.";
+
+        } else if (symptomText.includes("cough")) {
+           guidance = "Aapne cough mention kiya hai. Yeh tool cough ki wajah identify nahi kar sakta.";
+           careTips = "Aaram karein, fluids lein aur smoke ya dust se door rahein. Saans lene mein dikkat ho ya symptoms badhein, to medical help lein.";
+
+        } else if (symptomText.includes("stomach pain")) {
+            guidance = "Aapne stomach pain mention kiya hai. Pet dard ke kai possible causes ho sakte hain";
+            careTips = "Aaram karein aur apne symptoms par nazar rakhein. Dard severe ho, badhta jaaye ya baar-baar ho, to medical professional se salah lein.";
+
+        } else { 
+            guidance = "Yeh tool aapke symptoms ka diagnosis nahi kar sakte.";
+            careTips = "Aaram karein, apne symptoms par nazar rakhein aur zarurat padne par medical professional se salah lein.";
         }
+
+        resultText.textContent = guidance + "\n\nGeneral Care Tips:\n" + careTips;
 
         result.style.display = "block";
         result.scrollIntoView({ behavior: "smooth", block: "nearest" });
